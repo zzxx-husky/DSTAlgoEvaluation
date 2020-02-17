@@ -1,3 +1,5 @@
+Note: This project only converts the original project to a maven project and does nothing else. 
+
 DSTAlgoEvaluation
 =================
 
