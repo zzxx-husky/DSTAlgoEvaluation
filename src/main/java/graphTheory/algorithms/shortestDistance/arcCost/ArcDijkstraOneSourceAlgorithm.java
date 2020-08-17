@@ -37,13 +37,13 @@ public class ArcDijkstraOneSourceAlgorithm extends Algorithm<ArcShortestPathOneS
 	 * For each node v, this map contains the cost of the shortest path from the
 	 * source to v
 	 */
-	protected HashMap<Integer, Integer> costs;
+	protected HashMap<Integer, Double> costs;
 
 	public HashMap<Integer, List<Arc>> getShortestPaths() {
 		return shPs;
 	}
 
-	public HashMap<Integer, Integer> getCosts() {
+	public HashMap<Integer, Double> getCosts() {
 		return costs;
 	}
 
@@ -54,7 +54,7 @@ public class ArcDijkstraOneSourceAlgorithm extends Algorithm<ArcShortestPathOneS
 	/**
 	 * Map linking every node to its distance from the source
 	 */
-	private HashMap<Integer, Integer> distanceFromSource;
+	private HashMap<Integer, Double> distanceFromSource;
 
 	/**
 	 * Map linking every node arc preceding this node in one lowest cost path.
@@ -93,7 +93,7 @@ public class ArcDijkstraOneSourceAlgorithm extends Algorithm<ArcShortestPathOneS
 	 */
 	private void init() {
 
-		distanceFromSource = new HashMap<Integer, Integer>();
+		distanceFromSource = new HashMap<Integer, Double>();
 		preceding = new HashMap<Integer, Arc>();
 
 		fibTree = new FibonacciHeap<Integer>();
@@ -115,7 +115,7 @@ public class ArcDijkstraOneSourceAlgorithm extends Algorithm<ArcShortestPathOneS
 			n = it.next();
 			double d;
 			if (n.equals(instance.getSource())) {
-				distanceFromSource.put(n, 0);
+				distanceFromSource.put(n, 0.);
 				d = 0.0;
 			} else {
 				distanceFromSource.put(n, null);
@@ -136,7 +136,7 @@ public class ArcDijkstraOneSourceAlgorithm extends Algorithm<ArcShortestPathOneS
 	 * @param n
 	 */
 	private void expandFrom(Integer n) {
-		Integer distanceFromSource = this.distanceFromSource.get(n);
+		Double distanceFromSource = this.distanceFromSource.get(n);
 		if (distanceFromSource == null) // Infinite distance from the source.
 			return;
 
@@ -165,9 +165,9 @@ public class ArcDijkstraOneSourceAlgorithm extends Algorithm<ArcShortestPathOneS
 	 * @param a
 	 * @param output
 	 */
-	private void expand(Integer distanceFromSource, Arc a, Integer output) {
-		Integer dist = distanceFromSource + instance.getIntCost(a);
-		Integer nndN = this.distanceFromSource.get(output);
+	private void expand(Double distanceFromSource, Arc a, Integer output) {
+		Double dist = distanceFromSource + instance.getDoubleCost(a);
+		Double nndN = this.distanceFromSource.get(output);
 		if ((nndN == null || nndN > dist)) {
 			FibonacciHeap<Integer>.FibonacciHeapNode<Integer> fhn = nodes
 					.get(output);

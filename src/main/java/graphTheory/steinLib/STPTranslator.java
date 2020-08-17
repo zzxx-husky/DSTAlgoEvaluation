@@ -378,7 +378,7 @@ public class STPTranslator {
 		while (it.hasNext()) {
 			a = it.next();
 			f.writeln((isDirected ? 'A' : 'E') + " " + a.getInput() + " "
-					+ a.getOutput() + " " + g.getIntCost(a));
+					+ a.getOutput() + " " + g.getDoubleCost(a));
 		}
 		f.writeln("END");
 		f.writeln();

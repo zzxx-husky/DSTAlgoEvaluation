@@ -32,20 +32,20 @@ public abstract class MinimumBranchingAlgorithm extends Algorithm<MinimumBranchi
 	/**
 	 * Cost of the output arborescence
 	 */
-	protected Integer cost;
+	protected Double cost;
 
 	public HashSet<Arc> getArborescence() {
 		return this.arborescence;
 	}
 
-	public Integer getCost() {
+	public Double getCost() {
 		return cost;
 	}
 
 	@Override
 	protected void setNoSolution() {
 		arborescence = null;
-		cost = -1;
+		cost = -1.0;
 	}
 
 }

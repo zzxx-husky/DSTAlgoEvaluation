@@ -27,7 +27,7 @@ public class ShP2Algorithm extends SteinerArborescenceApproximationAlgorithm {
 	
 	@Override
 	protected void computeWithoutTime() {
-		HashMap<Arc, Integer> costs = instance.getIntCosts();
+		HashMap<Arc, Double> costs = instance.getDoubleCosts();
 		HashSet<Arc> h = new HashSet<Arc>();
 		Integer v;
 
@@ -47,14 +47,14 @@ public class ShP2Algorithm extends SteinerArborescenceApproximationAlgorithm {
 		do{
 
 			alg.compute();
-			HashMap<Integer, Integer> shc = alg.getCosts();
+			HashMap<Integer, Double> shc = alg.getCosts();
 			
 			// Get the shortest path from the root to any terminal
 			Integer term = getNearestRequiredVertice(shc, toCover);
 
 			List<Arc> path = alg.getShortestPaths().get(term);
 			for(Arc a : path){
-				costs.put(a, 0);
+				costs.put(a, 0.0);
 				h.add(a);
 			}
 			toCover.remove(term);
@@ -62,19 +62,19 @@ public class ShP2Algorithm extends SteinerArborescenceApproximationAlgorithm {
 		}while(!(toCover.isEmpty()));
 		
 		// Compute the cost of optimal solution
-		int c = 0;
+		double c = 0;
 		for (Arc a : h)
-			c += instance.getIntCost(a);
+			c += instance.getDoubleCost(a);
 
 		arborescence = h;
 		cost = c;
 	}
 
-	private Integer getNearestRequiredVertice(HashMap<Integer, Integer> shc, HashSet<Integer> toCover){
-		int bestCost = Integer.MAX_VALUE;
+	private Integer getNearestRequiredVertice(HashMap<Integer, Double> shc, HashSet<Integer> toCover){
+		double bestCost = Integer.MAX_VALUE;
 		Integer nearestTerm = null;
 		for(Integer term : toCover){
-			int cost = shc.get(term);
+			double cost = shc.get(term);
 			if(cost < bestCost){
 				bestCost = cost; 
 				nearestTerm = term;

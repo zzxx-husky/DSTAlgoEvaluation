@@ -38,13 +38,13 @@ public class ArcDijkstraOneDestinationAlgorithm extends Algorithm<ArcShortestPat
 	 * For each node v, this map contains the cost of the shortest path from v
 	 * to the destination
 	 */
-	protected HashMap<Integer, Integer> costs;
+	protected HashMap<Integer, Double> costs;
 
 	public HashMap<Integer, List<Arc>> getShortestPaths() {
 		return shPs;
 	}
 
-	public HashMap<Integer, Integer> getCosts() {
+	public HashMap<Integer, Double> getCosts() {
 		return costs;
 	}
 
@@ -55,7 +55,7 @@ public class ArcDijkstraOneDestinationAlgorithm extends Algorithm<ArcShortestPat
 	/**
 	 * Map linking every node to its distance to destination
 	 */
-	private HashMap<Integer, Integer> distanceToDestination;
+	private HashMap<Integer, Double> distanceToDestination;
 
 	/**
 	 * Map linking every node arc following this node in one lowest cost path.
@@ -94,7 +94,7 @@ public class ArcDijkstraOneDestinationAlgorithm extends Algorithm<ArcShortestPat
 	 */
 	private void init() {
 
-		distanceToDestination = new HashMap<Integer, Integer>();
+		distanceToDestination = new HashMap<Integer, Double>();
 		following = new HashMap<Integer, Arc>();
 
 		fibTree = new FibonacciHeap<Integer>();
@@ -116,7 +116,7 @@ public class ArcDijkstraOneDestinationAlgorithm extends Algorithm<ArcShortestPat
 			n = it.next();
 			double d;
 			if (n.equals(instance.getDestination())) {
-				distanceToDestination.put(n, 0);
+				distanceToDestination.put(n, 0.);
 				d = 0.0;
 			} else {
 				distanceToDestination.put(n, null);
@@ -137,7 +137,7 @@ public class ArcDijkstraOneDestinationAlgorithm extends Algorithm<ArcShortestPat
 	 * @param n
 	 */
 	private void expandFrom(Integer n) {
-		Integer distanceToDestination = this.distanceToDestination.get(n);
+		Double distanceToDestination = this.distanceToDestination.get(n);
 		if (distanceToDestination == null) // Infinite distance from the source.
 			return;
 
@@ -168,9 +168,9 @@ public class ArcDijkstraOneDestinationAlgorithm extends Algorithm<ArcShortestPat
 	 * @param a
 	 * @param input
 	 */
-	private void expand(Integer distanceToDestination, Arc a, Integer input) {
-		Integer dist = distanceToDestination + instance.getIntCost(a);
-		Integer nndN = this.distanceToDestination.get(input);
+	private void expand(Double distanceToDestination, Arc a, Integer input) {
+		Double dist = distanceToDestination + instance.getDoubleCost(a);
+		Double nndN = this.distanceToDestination.get(input);
 		if ((nndN == null || nndN > dist)) {
 			FibonacciHeap<Integer>.FibonacciHeapNode<Integer> fhn = nodes
 					.get(input);

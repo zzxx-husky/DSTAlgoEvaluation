@@ -27,7 +27,7 @@ public class ShPAlgorithm extends SteinerArborescenceApproximationAlgorithm {
 	@Override
 	protected void computeWithoutTime() {
 
-		HashMap<Arc, Integer> costs = instance.getIntCosts();
+		HashMap<Arc, Double> costs = instance.getDoubleCosts();
 		HashSet<Arc> h = new HashSet<Arc>();
 		Integer v;
 
@@ -54,9 +54,9 @@ public class ShPAlgorithm extends SteinerArborescenceApproximationAlgorithm {
 		}
 
 		// Compute the cost of optimal solution
-		int c = 0;
+		double c = 0;
 		for (Arc a : h)
-			c += instance.getIntCost(a);
+			c += instance.getDoubleCost(a);
 
 		arborescence = h;
 		cost = c;

@@ -65,7 +65,7 @@ public class GFLACTR2Algorithm extends SteinerArborescenceApproximationAlgorithm
 	 * <p>
 	 * Note that, for an couple c, the cost of c is initialized if and only if we need it.
 	 */
-	private HashMap<Couple<Integer,Integer>, Integer> costs;
+	private HashMap<Couple<Integer,Integer>, Double> costs;
 
 	/**
 	 * For each couple of nodes (u,v), contains, at the end of the algorithm, the ordered list of arcs 
@@ -154,7 +154,7 @@ public class GFLACTR2Algorithm extends SteinerArborescenceApproximationAlgorithm
 		// Initialisation of every parameter
 		// Note that those parameters are currently empty. Elements are added to them later
 		// when it is necessary.
-		costs = new HashMap<Couple<Integer,Integer>, Integer>();
+		costs = new HashMap<Couple<Integer,Integer>, Double>();
 		shortestPath = new HashMap<Couple<Integer,Integer>, TreeIterator<Arc>>();
 		saturated = new HashSet<Couple<Integer,Integer>>();
 		sources = new HashMap<Integer, HashSet<Integer>>();
@@ -218,9 +218,9 @@ public class GFLACTR2Algorithm extends SteinerArborescenceApproximationAlgorithm
 		
 		// Set the output of this algorithm : the returned tree and its cost
 		arborescence = currentSol;
-		cost = 0;
+		cost = 0.0;
 		for(Arc a : arborescence){
-			cost += instance.getIntCost(a);
+			cost += instance.getDoubleCost(a);
 		}
 	}
 
@@ -246,8 +246,8 @@ public class GFLACTR2Algorithm extends SteinerArborescenceApproximationAlgorithm
 					return 0;
 				else {
 					// Compute the costs of o1 and o2
-					Integer i1 = GFLACTR2Algorithm.this.getCost(o1);
-					Integer i2 = GFLACTR2Algorithm.this.getCost(o2);
+					Double i1 = GFLACTR2Algorithm.this.getCost(o1);
+					Double i2 = GFLACTR2Algorithm.this.getCost(o2);
 					int comp;
 					
 					// Compare the costs
@@ -386,7 +386,7 @@ public class GFLACTR2Algorithm extends SteinerArborescenceApproximationAlgorithm
 	private boolean updateCosts(Couple<Integer,Integer> cuv){
 
 		// The cost of the arc (u,v)
-		Integer cost_uv = this.getCost(cuv);
+		Double cost_uv = this.getCost(cuv);
 
 		Integer u = cuv.first;
 		Integer v = cuv.second;
@@ -410,7 +410,7 @@ public class GFLACTR2Algorithm extends SteinerArborescenceApproximationAlgorithm
 			cwv.second = v;
 
 			// Cost of the arc (w,v)
-			Integer cost_wv = this.getCost(cwv);
+			Double cost_wv = this.getCost(cwv);
 
 
 			// Arc (w,u)
@@ -419,10 +419,10 @@ public class GFLACTR2Algorithm extends SteinerArborescenceApproximationAlgorithm
 			cwu.second = u;
 
 			// Cost of the arc (w,v)
-			Integer cost_wu = this.getCost(cwu);
+			Double cost_wu = this.getCost(cwu);
 			
 			// Updated cost of the arc (w,v)
-			Integer cost_wvp;
+			Double cost_wvp;
 			if(cost_wu == null)
 				// If the cost of (w,u) is positive_infinitly then, whatever the case, cost_wvp can not be less than cost_wv 
 				continue;
@@ -583,7 +583,7 @@ public class GFLACTR2Algorithm extends SteinerArborescenceApproximationAlgorithm
 	 * @param cuv
 	 * @param newCost
 	 */
-	private void decreaseKey(Couple<Integer,Integer> cuv, Integer newCost){
+	private void decreaseKey(Couple<Integer,Integer> cuv, Double newCost){
 		Integer v = cuv.second;
 		TreeSet<Couple<Integer,Integer>> tree = sortedInputArcs.get(v);
 		// We first have to remove the arc from the tree or it will not be able to find it anymore.
@@ -598,11 +598,11 @@ public class GFLACTR2Algorithm extends SteinerArborescenceApproximationAlgorithm
 	 * @param cuv
 	 * @return the current cost of the arc cuv. If it does not exists, init it.
 	 */
-	private Integer getCost(Couple<Integer,Integer> cuv){
-		Integer cost;
+	private Double getCost(Couple<Integer,Integer> cuv){
+		Double cost;
 		if(!costs.containsKey(cuv)){
 			Arc b = instance.getGraph().getLink(cuv.first, cuv.second);
-			cost = instance.getIntCost(b, true);
+			cost = instance.getDoubleCost(b, true);
 			costs.put(cuv, cost);
 		}
 		else
@@ -616,7 +616,7 @@ public class GFLACTR2Algorithm extends SteinerArborescenceApproximationAlgorithm
 	 * @return the maximum value of flow an arc a can contain: its cost
 	 */
 	private Double getVolume(Couple<Integer,Integer> cuv) {
-		Integer cost = getCost(cuv);
+		Double cost = getCost(cuv);
 		if (cost == null)
 			return Double.POSITIVE_INFINITY;
 		else

@@ -44,7 +44,7 @@ import java.util.LinkedList;
  * 
  * @author Watel Dimitri
  * 
- * @see #EdmongChuLiuAlgorithm
+ * see #EdmongChuLiuAlgorithm
  */
 public class EdmondChuLiuIterAlgorithm extends MinimumBranchingAlgorithm {
 	
@@ -55,8 +55,8 @@ public class EdmondChuLiuIterAlgorithm extends MinimumBranchingAlgorithm {
 
 		@Override
 		public int compare(Arc o1, Arc o2) {
-			Integer i1 = getCost(o1);
-			Integer i2 = getCost(o2);
+			Double i1 = getCost(o1);
+			Double i2 = getCost(o2);
 			if (i1 == null)
 				return -1;
 			else if (i1.equals(i2))
@@ -73,15 +73,15 @@ public class EdmondChuLiuIterAlgorithm extends MinimumBranchingAlgorithm {
 	 * Costs of the arcs added during the algorithm (linked to the contracted
 	 * nodes)
 	 */
-	private HashMap<Arc, Integer> virtCost;
+	private HashMap<Arc, Double> virtCost;
 
 	/**
 	 * @return the cost of the arc a, even if a was added during the algorithm.
 	 */
-	private Integer getCost(Arc a) {
-		Integer i = virtCost.get(a);
+	private Double getCost(Arc a) {
+		Double i = virtCost.get(a);
 		if (i == null)
-			i = instance.getIntCost(a);
+			i = instance.getDoubleCost(a);
 		return i;
 	}
 
@@ -96,7 +96,7 @@ public class EdmondChuLiuIterAlgorithm extends MinimumBranchingAlgorithm {
 		arcOfNode = new HashMap<Integer, Arc>();
 		contractions = new LinkedList<Couple<Integer, HashSet<Integer>>>();
 		arcContractionLink = new HashMap<Arc, Arc>();
-		virtCost = new HashMap<Arc, Integer>();
+		virtCost = new HashMap<Arc, Double>();
 
 		HashSet<Arc> h = new HashSet<Arc>();
 		markEdges(h);
@@ -115,10 +115,10 @@ public class EdmondChuLiuIterAlgorithm extends MinimumBranchingAlgorithm {
 
 		returnCyclesBack(h);
 
-		cost = 0;
+		cost = 0.0;
 		arborescence = h;
 		for (Arc a : arborescence)
-			cost += instance.getIntCost(a);
+			cost += instance.getDoubleCost(a);
 
 	}
 
@@ -220,7 +220,7 @@ public class EdmondChuLiuIterAlgorithm extends MinimumBranchingAlgorithm {
 	private void setContractionInputs(Integer contractNode,
 			HashSet<Integer> cycle) {
 		HashMap<Integer, Arc> inputs = new HashMap<Integer, Arc>();
-		HashMap<Integer, Integer> inputsC = new HashMap<Integer, Integer>();
+		HashMap<Integer, Double> inputsC = new HashMap<Integer, Double>();
 
 		Arc a;
 		Iterator<Arc> it;
@@ -232,10 +232,10 @@ public class EdmondChuLiuIterAlgorithm extends MinimumBranchingAlgorithm {
 				Integer input = a.getInput();
 				if (cycle.contains(input))
 					continue;
-				int relCostA = getCost(a) - getCost(aon);
+				double relCostA = getCost(a) - getCost(aon);
 				Arc b = inputs.get(input);
 				if (b != null) {
-					int relCostB = inputsC.get(input);
+					double relCostB = inputsC.get(input);
 					if (relCostA < relCostB) {
 						inputs.put(input, a);
 						inputsC.put(input, relCostA);
@@ -264,7 +264,7 @@ public class EdmondChuLiuIterAlgorithm extends MinimumBranchingAlgorithm {
 	private void setContractionOutputs(Integer contractNode,
 			HashSet<Integer> cycle) {
 		HashMap<Integer, Arc> outputs = new HashMap<Integer, Arc>();
-		HashMap<Integer, Integer> outputsC = new HashMap<Integer, Integer>();
+		HashMap<Integer, Double> outputsC = new HashMap<Integer, Double>();
 
 		Arc a;
 		Iterator<Arc> it;
@@ -277,10 +277,10 @@ public class EdmondChuLiuIterAlgorithm extends MinimumBranchingAlgorithm {
 				if (cycle.contains(output))
 					continue;
 
-				int costA = getCost(a);
+				double costA = getCost(a);
 				Arc b = outputs.get(output);
 				if (b != null) {
-					int costB = outputsC.get(output);
+					double costB = outputsC.get(output);
 					if (costA < costB) {
 						outputs.put(output, a);
 						outputsC.put(output, costA);

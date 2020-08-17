@@ -18,20 +18,20 @@ public abstract class SteinerArborescenceApproximationAlgorithm extends
 		Algorithm<SteinerDirectedInstance> {
 
 	protected HashSet<Arc> arborescence;
-	protected Integer cost;
+	protected Double cost;
 
 	public HashSet<Arc> getArborescence() {
 		return arborescence;
 	}
 
-	public Integer getCost() {
+	public Double getCost() {
 		return cost;
 	}
 
 	@Override
 	protected void setNoSolution() {
 		arborescence = null;
-		cost = -1;
+		cost = -1.0;
 	}
 
 

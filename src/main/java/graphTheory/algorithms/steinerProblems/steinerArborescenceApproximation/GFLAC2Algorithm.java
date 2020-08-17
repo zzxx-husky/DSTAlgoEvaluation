@@ -57,7 +57,7 @@ public class GFLAC2Algorithm extends SteinerArborescenceApproximationAlgorithm {
 	 * Copy of the costs of the instance. It let the algorithm modify the costs
 	 * withouth modifying the instance it self.
 	 */
-	private HashMap<Arc, Integer> costs;
+	private HashMap<Arc, Double> costs;
 
 	/**
 	 * Copy of the required vertices of the instance. It let the algorithm
@@ -92,7 +92,7 @@ public class GFLAC2Algorithm extends SteinerArborescenceApproximationAlgorithm {
 		// This set will merge the trees returned by FLAC
 		HashSet<Arc> currentSol = new HashSet<Arc>();
 
-		this.costs = instance.getIntCosts();
+		this.costs = instance.getDoubleCosts();
 		comp = getArcsComparator();
 
 		sortedInputArcs = new HashMap<Integer, TreeSet<Arc>>();
@@ -135,10 +135,10 @@ public class GFLAC2Algorithm extends SteinerArborescenceApproximationAlgorithm {
 		// Set the output of this algorithm : the returned tree and its cost
 
 		arborescence = currentSol;
-		int c = 0;
+		double c = 0;
 		if (arborescence != null)
 			for (Arc a : arborescence)
-				c += instance.getIntCost(a);
+				c += instance.getDoubleCost(a);
 
 		cost = c;
 	}
@@ -155,8 +155,8 @@ public class GFLAC2Algorithm extends SteinerArborescenceApproximationAlgorithm {
 				else if (o1.equals(o2))
 					return 0;
 				else {
-					Integer i1 = costs.get(o1);
-					Integer i2 = costs.get(o2);
+					Double i1 = costs.get(o1);
+					Double i2 = costs.get(o2);
 					int comp = i1.compareTo(i2);
 					if (comp != 0)
 						return comp;

@@ -89,7 +89,7 @@ public class SteinerDirectedInstance extends SteinerInstance implements
 		
 		// shpInSui contains for each couple of nodes the shortest path costs in sui
 		// between those nodes
-		Integer[][] shpInSui = new Integer[s][s];
+		Double[][] shpInSui = new Double[s][s];
 		
 		// connectionsInSdi[i][j] is true if sdi contains a path from the node
 		// if id i to the node of id j. At the beginning, sdi is empty and do not
@@ -109,7 +109,7 @@ public class SteinerDirectedInstance extends SteinerInstance implements
 			dg.addVertice(n);
 			sdi.setRequired(n, sui.isRequired(n));
 
-			shpInSui[id][id] = 0; // The shortest path from a node to itself is 0
+			shpInSui[id][id] = 0.; // The shortest path from a node to itself is 0
 			connectionsInSdi[id][id] = true; // sdi contains a path from any node to itself 
 
 			nodes2ids.put(n, id);
@@ -145,7 +145,7 @@ public class SteinerDirectedInstance extends SteinerInstance implements
 				if (!alreadyDirected.contains(aInducedGraph)) {
 					alreadyDirected.add(aInducedGraph);
 					Arc a = dg.addDirectedEdge(m, p);
-					sdi.setCost(a, sui.getIntCost(aInducedGraph));
+					sdi.setCost(a, sui.getDoubleCost(aInducedGraph));
 					
 					// For each new arc in sdi, we update the connection between the nodes
 					connectionsInSdi[nodes2ids.get(a.getInput())][nodes2ids
@@ -172,7 +172,7 @@ public class SteinerDirectedInstance extends SteinerInstance implements
 				m = a.getInput();
 			}
 
-			Integer cost = sui.getIntCost(a);
+			Double cost = sui.getDoubleCost(a);
 
 			// If the edge was not already directed
 			if (!optTree.contains(a)) {
@@ -192,7 +192,8 @@ public class SteinerDirectedInstance extends SteinerInstance implements
 		// using the raw warshall floyd algorithm
 		
 		Iterator<Integer> itu, itv, itw;
-		Integer idu, idv, idw, uv, vw, uw;
+		Integer idu, idv, idw;
+		Double uv, vw, uw;
 		itv = ug.getVerticesIterator();
 		while (itv.hasNext()) {
 			idv = nodes2ids.get(itv.next());
@@ -321,7 +322,7 @@ public class SteinerDirectedInstance extends SteinerInstance implements
 				if (!alreadyUsed.contains(aInducedGraph)) {
 					alreadyUsed.add(aInducedGraph);
 					Arc a = dg.addDirectedEdge(m, p);
-					sdi.setCost(a, sui.getIntCost(aInducedGraph));
+					sdi.setCost(a, sui.getDoubleCost(aInducedGraph));
 				}
 				m = p;
 			}
@@ -351,7 +352,7 @@ public class SteinerDirectedInstance extends SteinerInstance implements
 				if (seen.contains(v))
 					continue;
 				Arc b = dg.addDirectedEdge(u, v);
-				sdi.setCost(b, sui.getIntCost(a));
+				sdi.setCost(b, sui.getDoubleCost(a));
 				toSee.add(v);
 
 			}
@@ -400,8 +401,8 @@ public class SteinerDirectedInstance extends SteinerInstance implements
 			Arc b1 = dg.addDirectedEdge(u, v);
 			Arc b2 = dg.addDirectedEdge(v, u);
 
-			sdg.setCost(b1, sug.getIntCost(a));
-			sdg.setCost(b2, sug.getIntCost(a));
+			sdg.setCost(b1, sug.getDoubleCost(a));
+			sdg.setCost(b2, sug.getDoubleCost(a));
 		}
 		return sdg;
 	}
@@ -420,7 +421,7 @@ public class SteinerDirectedInstance extends SteinerInstance implements
 
 		s.append("\nArcs\n\n");
 		for (Arc a : getGraph().getEdges()) {
-			s.append(a).append(" ").append(getIntCost(a)).append("\n");
+			s.append(a).append(" ").append(getDoubleCost(a)).append("\n");
 		}
 
 		return s.toString();

@@ -136,10 +136,10 @@ public class GFLACDisctributedAlgorithm extends SteinerArborescenceApproximation
 		// Set the output of this algorithm : the returned tree and its cost
 
 		arborescence = currentSol;
-		int c = 0;
+		double c = 0;
 		if (arborescence != null)
 			for (Arc a : arborescence)
-				c += instance.getIntCost(a);
+				c += instance.getDoubleCost(a);
 
 		cost = c;
 	}
@@ -156,8 +156,8 @@ public class GFLACDisctributedAlgorithm extends SteinerArborescenceApproximation
 				else if (o1.equals(o2))
 					return 0;
 				else {
-					Integer i1 = GFLACDisctributedAlgorithm.this.instance.getIntCost(o1);
-					Integer i2 = GFLACDisctributedAlgorithm.this.instance.getIntCost(o2);
+					Double i1 = GFLACDisctributedAlgorithm.this.instance.getDoubleCost(o1);
+					Double i2 = GFLACDisctributedAlgorithm.this.instance.getDoubleCost(o2);
 					int comp = i1.compareTo(i2);
 					if (comp != 0)
 						return comp;
@@ -431,7 +431,7 @@ public class GFLACDisctributedAlgorithm extends SteinerArborescenceApproximation
 		if(currentArc == null)
 			return;
 
-		Integer arcCost = instance.getIntCost(currentArc);
+		Double arcCost = instance.getDoubleCost(currentArc);
 
 		List<Triplet<Double, List<Integer>, Arc>> flowTimeArrivals = this.getFlowTimeArrivals(saturatingNode);
 		Iterator<Triplet<Double, List<Integer>, Arc>> itFTA = flowTimeArrivals.iterator();
@@ -477,7 +477,7 @@ public class GFLACDisctributedAlgorithm extends SteinerArborescenceApproximation
 				}
 				if(currentArc == null)
 					break;
-				arcCost = instance.getIntCost(currentArc);
+				arcCost = instance.getDoubleCost(currentArc);
 			}
 
 		}

@@ -51,7 +51,7 @@ public class RoosAlgorithm extends SteinerArborescenceApproximationAlgorithm {
 	 * Copy of the costs of the instance. It let the algorithm modify the costs
 	 * withouth modifying the instance it self.
 	 */
-	private HashMap<Arc, Integer> costs;
+	private HashMap<Arc, Double> costs;
 
 	/**
 	 * This map associates each couple of node (represented by an arc in the
@@ -98,20 +98,20 @@ public class RoosAlgorithm extends SteinerArborescenceApproximationAlgorithm {
 
 			currentSol.addAll(tree.first);
 			for (Arc a : tree.first)
-				costs.put(a, 0); // Set the cost of the arc to 0, as this arc is already used in the solution, it does not cost anything to use it again.
+				costs.put(a, 0.); // Set the cost of the arc to 0, as this arc is already used in the solution, it does not cost anything to use it again.
 			req.removeAll(tree.second);
 		}
 
 		// Compute the returned solution and its cost.
 		arborescence = new HashSet<Arc>();
-		int c = 0;
+		double c = 0;
 		for (Arc a : currentSol) {
 			List<Arc> l = shortestPaths.get(a);
 			if (a.getInput().equals(a.getOutput()))
 				l = new ArrayList<Arc>();
 			for (Arc b : l) {
 				arborescence.add(b);
-				c += instance.getIntCost(b);
+				c += instance.getDoubleCost(b);
 			}
 		}
 		cost = c;
@@ -121,7 +121,7 @@ public class RoosAlgorithm extends SteinerArborescenceApproximationAlgorithm {
 	 * Compute all the shortest paths from the root and to all terminals.
 	 */
 	private void initShortestPaths() {
-		costs = new HashMap<Arc, Integer>();
+		costs = new HashMap<Arc, Double>();
 		shortestPaths = new HashMap<Arc, List<Arc>>();
 
 		initShortestPathsFromRoot();
@@ -150,7 +150,7 @@ public class RoosAlgorithm extends SteinerArborescenceApproximationAlgorithm {
 		adij.setComputeOnlyCosts(false);
 		adij.compute();
 
-		HashMap<Integer, Integer> aDijCosts = adij.getCosts();
+		HashMap<Integer, Double> aDijCosts = adij.getCosts();
 		HashMap<Integer, List<Arc>> aDijPaths = adij.getShortestPaths();
 
 		// Register all the shortest paths and their cost.
@@ -192,7 +192,7 @@ public class RoosAlgorithm extends SteinerArborescenceApproximationAlgorithm {
 			// ... and compute the dijkstra algorithm over that instance
 			adij.compute();
 
-			HashMap<Integer, Integer> aDijCosts = adij.getCosts();
+			HashMap<Integer, Double> aDijCosts = adij.getCosts();
 			HashMap<Integer, List<Arc>> aDijPaths = adij.getShortestPaths();
 
 			// Register all the shortest paths and their cost.
@@ -248,8 +248,8 @@ public class RoosAlgorithm extends SteinerArborescenceApproximationAlgorithm {
 
 			@Override
 			public int compare(Integer t1, Integer t2) {
-				Integer i1 = costs.get(new Arc(v, t1, true));
-				Integer i2 = costs.get(new Arc(v, t2, true));
+				Double i1 = costs.get(new Arc(v, t1, true));
+				Double i2 = costs.get(new Arc(v, t2, true));
 				if (i1 == i2)
 					return t1.compareTo(t2);
 				else if (i1 == null)
@@ -294,18 +294,18 @@ public class RoosAlgorithm extends SteinerArborescenceApproximationAlgorithm {
 			// The possibly returned tree
 			t = new HashSet<Arc>();
 			Arc rv;
-			Integer c;
+			Double c;
 
 			// The first part of the root : the arc (root,v)
 			if (root.equals(v)) {
 				// if v is the root, then the arc (root,v) is empty and costs 0
-				c = 0;
+				c = 0.;
 			} else {
 				// if not, we add the arc to the current tested solution
 				// and register its cost
 				rv = new Arc(instance.getRoot(), v, true);
 				t.add(rv);
-				Integer crv = costs.get(rv);
+				Double crv = costs.get(rv);
 				if (crv == null)
 					continue;
 				else
@@ -340,7 +340,7 @@ public class RoosAlgorithm extends SteinerArborescenceApproximationAlgorithm {
 				if (b = !term.equals(v)) {
 					// If v is term, then the arc (v, term) is empty
 					a = new Arc(v, term, true);
-					Integer ca = costs.get(a);
+					Double ca = costs.get(a);
 					if (ca == null)
 						break;
 					else

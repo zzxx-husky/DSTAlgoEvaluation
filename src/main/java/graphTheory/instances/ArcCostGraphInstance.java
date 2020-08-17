@@ -125,7 +125,7 @@ public class ArcCostGraphInstance extends GraphInstance implements Cloneable {
 	public Number getCost(Integer n1, Integer n2, boolean nullCosts){
 			Arc a = this.getGraph().getLink(n1, n2);
 		if (a != null)
-			return getIntCost(a, nullCosts);
+			return getDoubleCost(a, nullCosts);
 		else
 			return null;
 	}

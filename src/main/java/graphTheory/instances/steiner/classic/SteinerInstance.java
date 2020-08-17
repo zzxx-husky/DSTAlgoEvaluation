@@ -89,11 +89,11 @@ public abstract class SteinerInstance extends ArcCostGraphInstance implements
 		Collections.sort(requiredVertices, comp);
 	}
 
-	public int maxCost() {
+	public double maxCost() {
 		Iterator<Arc> it = graph.getEdgesIterator();
-		int c = Integer.MIN_VALUE, d;
+		double c = Integer.MIN_VALUE, d;
 		while (it.hasNext()) {
-			d = this.getIntCost(it.next());
+			d = this.getDoubleCost(it.next());
 			if (c < d) {
 				c = d;
 			}
@@ -113,7 +113,7 @@ public abstract class SteinerInstance extends ArcCostGraphInstance implements
 
 		s.append("\nArcs\n\n");
 		for (Arc a : graph.getEdges()) {
-			s.append(a).append(" ").append(getIntCost(a)).append("\n");
+			s.append(a).append(" ").append(getDoubleCost(a)).append("\n");
 		}
 
 		return s.toString();

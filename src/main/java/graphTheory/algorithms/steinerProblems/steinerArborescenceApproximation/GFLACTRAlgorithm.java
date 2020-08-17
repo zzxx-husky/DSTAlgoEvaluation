@@ -85,7 +85,7 @@ public class GFLACTRAlgorithm extends SteinerArborescenceApproximationAlgorithm 
 			it2 = closureGraph.getVerticesIterator();
 			while(it2.hasNext()){
 				v = it2.next();
-				Integer shortestCost = rwf.getCosts().get(new Couple<Integer,Integer>(u,v));
+				Double shortestCost = rwf.getCosts().get(new Couple<Integer,Integer>(u,v));
 				if (shortestCost != null){ 
 					Arc a = closureGraph.addDirectedEdge(u, v);
 					closureInstance.setCost(a, shortestCost);
@@ -102,7 +102,7 @@ public class GFLACTRAlgorithm extends SteinerArborescenceApproximationAlgorithm 
 
 		HashSet<Arc> h = gflac.getArborescence();
 		HashSet<Arc> h2 = new HashSet<Arc>();
-		Integer cst = 0;
+		Double cst = 0.0;
 
 		// Build the solution from the closure instance solution
 
@@ -111,7 +111,7 @@ public class GFLACTRAlgorithm extends SteinerArborescenceApproximationAlgorithm 
 			List<Arc> path = rwf.getShortestPaths().get(c);
 			for(Arc b : path){
 				if(h2.add(b))
-					cst += instance.getIntCost(b);
+					cst += instance.getDoubleCost(b);
 			}
 		}
 
